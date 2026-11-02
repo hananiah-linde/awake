@@ -21,13 +21,13 @@ Requires macOS 13 Ventura or later.
 
 ## Install
 
-Homebrew (coming soon):
+Homebrew:
 
 ```sh
 brew install --cask hananiah-linde/tap/awake
 ```
 
-Or download `Awake.zip` from [Releases](https://github.com/hananiah-linde/awake/releases), unzip, and move `Awake.app` to `/Applications`.
+Or download `Awake-<version>.zip` from [Releases](https://github.com/hananiah-linde/awake/releases), unzip, and move `Awake.app` to `/Applications`.
 
 ## Build from source
 
@@ -66,6 +66,13 @@ pmset -g assertions | grep -i awake
 ```
 
 You should see a `PreventUserIdleDisplaySleep` assertion named "Awake is keeping this Mac awake". Turn it off and the line disappears.
+
+## Releasing
+
+1. Bump `VERSION`, commit, and push.
+2. Tag and push: `git tag v$(cat VERSION) && git push origin v$(cat VERSION)`
+
+The [release workflow](.github/workflows/release.yml) signs with Developer ID, notarizes, attaches `Awake-<version>.zip` to a GitHub Release, and updates the cask in [hananiah-linde/homebrew-tap](https://github.com/hananiah-linde/homebrew-tap). The shared workflows and the secrets they need are documented there.
 
 ## License
 
