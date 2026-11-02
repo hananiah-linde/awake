@@ -55,6 +55,8 @@ make run          # build, quit any running copy, and launch
 
 The version comes from the `VERSION` file.
 
+The app icon is drawn by `scripts/make-icon.swift`. After changing the drawing, run `swift scripts/make-icon.swift` to regenerate `Resources/Assets.xcassets`.
+
 Launch at Login works best when the app lives in `/Applications`:
 
 ```sh

@@ -42,6 +42,10 @@ echo "==> Assembling $APP"
 rm -rf "$APP"
 mkdir -p "$APP/Contents/MacOS" "$APP/Contents/Resources"
 cp "$BIN_DIR/$APP_NAME" "$APP/Contents/MacOS/$APP_NAME"
+# Compiles the icon to Assets.car + AppIcon.icns. actool ships with Xcode, not the Command Line Tools.
+xcrun actool Resources/Assets.xcassets --compile "$APP/Contents/Resources" \
+    --platform macosx --minimum-deployment-target 13.0 --app-icon AppIcon \
+    --output-partial-info-plist "$(mktemp)" > /dev/null
 sed -e "s/__BUNDLE_ID__/$BUNDLE_ID/g" \
     -e "s/__VERSION__/$VERSION/g" \
     -e "s/__BUILD__/$BUILD/g" \
