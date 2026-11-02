@@ -35,29 +35,15 @@ enum AwakeDuration: Hashable, Identifiable {
 }
 
 @MainActor
-final class AwakeController: ObservableObject {
-    @Published private(set) var isAwake = false
-    @Published private(set) var endsAt: Date?
+final class AwakeController {
+    private(set) var isAwake = false
+    private(set) var endsAt: Date?
 
-    @Published var keepDisplayOn: Bool {
-        didSet {
-            UserDefaults.standard.set(keepDisplayOn, forKey: Keys.keepDisplayOn)
-            // Re-apply so the change takes effect immediately while active.
-            if isAwake { assertion.begin(preventDisplaySleep: keepDisplayOn) }
-        }
-    }
+    /// Called after any state change so the menu bar icon can refresh.
+    var onChange: (() -> Void)?
 
     private let assertion = SleepAssertion()
     private var timer: Timer?
-
-    private enum Keys {
-        static let keepDisplayOn = "keepDisplayOn"
-    }
-
-    init() {
-        UserDefaults.standard.register(defaults: [Keys.keepDisplayOn: true])
-        keepDisplayOn = UserDefaults.standard.bool(forKey: Keys.keepDisplayOn)
-    }
 
     // MARK: - Awake state
 
@@ -69,9 +55,10 @@ final class AwakeController: ObservableObject {
         timer?.invalidate()
         timer = nil
 
-        guard assertion.begin(preventDisplaySleep: keepDisplayOn) else {
+        guard assertion.begin() else {
             isAwake = false
             endsAt = nil
+            onChange?()
             return
         }
 
@@ -88,6 +75,7 @@ final class AwakeController: ObservableObject {
         } else {
             endsAt = nil
         }
+        onChange?()
     }
 
     func stop() {
@@ -96,10 +84,12 @@ final class AwakeController: ObservableObject {
         assertion.end()
         isAwake = false
         endsAt = nil
+        onChange?()
     }
 
-    var statusText: String {
-        guard isAwake else { return "Sleep is allowed" }
+    /// `nil` while off.
+    var statusText: String? {
+        guard isAwake else { return nil }
         guard let endsAt else { return "Awake indefinitely" }
         let formatter = DateFormatter()
         formatter.timeStyle = .short
@@ -123,6 +113,6 @@ final class AwakeController: ObservableObject {
         } catch {
             NSLog("Awake: launch-at-login change failed: \(error.localizedDescription)")
         }
-        objectWillChange.send()
+        onChange?()
     }
 }

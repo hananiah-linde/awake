@@ -7,19 +7,14 @@ final class SleepAssertion {
     private var assertionID: IOPMAssertionID = 0
     private(set) var isActive = false
 
-    /// - Parameter preventDisplaySleep: `true` keeps the screen on too; `false` only keeps the system awake
-    ///   (display can still turn off, but downloads, builds, etc. keep running).
+    /// Keeps both the display and the system awake (PreventUserIdleDisplaySleep implies no idle system sleep).
     @discardableResult
-    func begin(preventDisplaySleep: Bool, reason: String = "Awake is keeping this Mac awake") -> Bool {
+    func begin(reason: String = "Awake is keeping this Mac awake") -> Bool {
         end()
-
-        let type: CFString = preventDisplaySleep
-            ? kIOPMAssertionTypePreventUserIdleDisplaySleep as CFString
-            : kIOPMAssertionTypePreventUserIdleSystemSleep as CFString
 
         var id: IOPMAssertionID = 0
         let result = IOPMAssertionCreateWithName(
-            type,
+            kIOPMAssertionTypePreventUserIdleDisplaySleep as CFString,
             IOPMAssertionLevel(kIOPMAssertionLevelOn),
             reason as CFString,
             &id

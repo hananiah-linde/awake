@@ -2,11 +2,18 @@
 
 A tiny macOS menu bar app that keeps your Mac awake.
 
-Click the menu bar icon (☀︎ when on, 🌙 when off) to:
+Awake lives in the menu bar as a coffee cup:
 
-- **Keep Awake** indefinitely, or **Keep Awake For** 15 minutes up to 8 hours (it turns itself off when time is up)
-- **Keep Display On**: when on, the screen stays lit; when off, only the system stays awake (the display may still sleep, but downloads, builds, etc. keep running)
-- **Launch at Login**
+- **Click** the cup to keep your Mac awake indefinitely. Click it again to turn Awake off.
+- **Right-click** (or two-finger tap) for **Keep Awake For** 15 minutes up to 8 hours, **Launch at Login**, and **Quit**. Timed sessions turn themselves off when time is up.
+
+| Icon | Meaning |
+| --- | --- |
+| Greyed-out cup | Off: your Mac sleeps normally |
+| Cup | On until you turn it off |
+| Cup with a clock | On until the chosen time is up |
+
+While Awake is on, both the display and the system stay awake.
 
 Awake uses an IOKit power assertion, the same mechanism as `caffeinate`. Quitting the app releases it immediately.
 
@@ -58,7 +65,7 @@ Turn Awake on, then:
 pmset -g assertions | grep -i awake
 ```
 
-You should see a `PreventUserIdleDisplaySleep` (Keep Display On) or `PreventUserIdleSystemSleep` assertion named "Awake is keeping this Mac awake". Turn it off and the line disappears.
+You should see a `PreventUserIdleDisplaySleep` assertion named "Awake is keeping this Mac awake". Turn it off and the line disappears.
 
 ## License
 
