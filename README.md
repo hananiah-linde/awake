@@ -69,10 +69,12 @@ You should see a `PreventUserIdleDisplaySleep` assertion named "Awake is keeping
 
 ## Releasing
 
-1. Bump `VERSION`, commit, and push.
-2. Tag and push: `git tag v$(cat VERSION) && git push origin v$(cat VERSION)`
+Releases are built on this Mac with the shared script in [hananiah-linde/homebrew-tap](https://github.com/hananiah-linde/homebrew-tap), cloned next to this repo:
 
-The [release workflow](.github/workflows/release.yml) signs with Developer ID, notarizes, attaches `Awake-<version>.zip` to a GitHub Release, and updates the cask in [hananiah-linde/homebrew-tap](https://github.com/hananiah-linde/homebrew-tap). The shared workflows and the secrets they need are documented there.
+1. Bump `VERSION`, commit, and push.
+2. `make release`
+
+That tags `v<VERSION>`, builds a universal app, signs it with Developer ID, notarizes and staples it, publishes `Awake-<version>.zip` to a GitHub Release, and updates the cask. See the tap's README for the one-time keychain setup. A manual CI fallback is under Actions → Release.
 
 ## License
 

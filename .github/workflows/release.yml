@@ -1,8 +1,9 @@
 name: Release
 
+# Releases normally run locally with `make release`. This is a manual CI fallback:
+# Actions > Release > Run workflow, choosing the vX.Y.Z tag under "Use workflow from".
 on:
-  push:
-    tags: ["v*"]
+  workflow_dispatch:
 
 jobs:
   release:
