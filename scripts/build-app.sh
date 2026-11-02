@@ -20,6 +20,12 @@ BUNDLE_ID="${BUNDLE_ID:-io.github.hananiah-linde.awake}"
 SIGN_IDENTITY="${SIGN_IDENTITY:--}"
 UNIVERSAL="${UNIVERSAL:-0}"
 
+# The Command Line Tools lack some x86_64 Swift libraries; use Xcode's toolchain when it's installed.
+if [ -z "${DEVELOPER_DIR:-}" ] && [ "$(xcode-select -p)" = "/Library/Developer/CommandLineTools" ] \
+    && [ -d /Applications/Xcode.app/Contents/Developer ]; then
+    export DEVELOPER_DIR=/Applications/Xcode.app/Contents/Developer
+fi
+
 # Bash 3.2 + set -u treats "${arr[@]}" on an empty array as unbound,
 # so expand with ${arr[@]+"${arr[@]}"}.
 SWIFT_ARGS=()
