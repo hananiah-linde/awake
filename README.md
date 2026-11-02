@@ -24,8 +24,12 @@ Requires macOS 13 Ventura or later.
 Homebrew:
 
 ```sh
+brew tap hananiah-linde/tap
+brew trust --cask hananiah-linde/tap/awake
 brew install --cask hananiah-linde/tap/awake
 ```
+
+Homebrew only loads casks from third-party taps you've trusted, which is what `brew trust` does.
 
 Or download `Awake-<version>.zip` from [Releases](https://github.com/hananiah-linde/awake/releases), unzip, and move `Awake.app` to `/Applications`.
 
